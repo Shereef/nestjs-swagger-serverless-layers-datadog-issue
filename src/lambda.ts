@@ -2,11 +2,6 @@
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import { Context, Handler } from 'aws-lambda';
-import {
-  DocumentBuilder,
-  SwaggerCustomOptions,
-  SwaggerModule,
-} from '@nestjs/swagger';
 import { createServer, proxy } from 'aws-serverless-express';
 import { eventContext } from 'aws-serverless-express/middleware';
 import { Server } from 'http';
@@ -34,23 +29,6 @@ async function bootstrapServer(): Promise<Server> {
       defaultVersion: '1',
     });
     nestApp.use(eventContext());
-
-    const config = new DocumentBuilder()
-      .setTitle('Service API')
-      .setDescription('This is service microservice')
-      .setVersion('1.0')
-      .build();
-
-    const document = SwaggerModule.createDocument(nestApp, config);
-
-    const customOptions: SwaggerCustomOptions = {
-      swaggerOptions: {
-        persistAuthorization: true,
-      },
-      customSiteTitle: 'Service API Documentation',
-    };
-
-    SwaggerModule.setup('', nestApp, document, customOptions);
 
     await nestApp.init();
     cachedServer = createServer(expressApp, undefined, binaryMimeTypes);
