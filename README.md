@@ -4,6 +4,8 @@ In this repo I am trying to explain that when the following is installed and ena
 2. [serverless-plugin-datadog](https://github.com/DataDog/serverless-plugin-datadog)
 3. [@nestjs/swagger](https://github.com/nestjs/swagger)
 
+if you disable any of them everything works fine (except the disabled protion ofc)
+
 To test this out
 
 1. Add `DATADOG_API_KEY` env var with your datadog env vars
