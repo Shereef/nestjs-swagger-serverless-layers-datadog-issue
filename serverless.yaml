@@ -1,9 +1,9 @@
-service: nestjs-swagger-serverless-layers-datadog-issue
+service: nestjs-swagger-no-sls-layers-datadog
 
 plugins:
   - serverless-plugin-typescript
   - serverless-deployment-bucket
-  - serverless-layers
+  #- serverless-layers
   - serverless-plugin-datadog
 
 provider:
