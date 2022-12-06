@@ -1,0 +1,40 @@
+service: nestjs-swagger-serverless-layers-datadog-issue
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-deployment-bucket
+  - serverless-layers
+  - serverless-plugin-datadog
+
+provider:
+  name: aws
+  stage: ${opt:stage, "dev"}
+  runtime: nodejs16.x
+  region: ${opt:region, "us-east-2"}
+  deploymentBucket:
+    name: ${self:provider.region}-${self:service}-${self:provider.stage}
+    versioning: true
+    blockPublicAccess: true
+    serverSideEncryption: AES256
+
+package:
+  individually: true
+
+custom:
+  serverless-layers:
+    packageManagerExtraArgs: '--ignore-scripts'
+    dependenciesPath: ./package.json
+  datadog:
+    site: datadoghq.com
+    apiKey: ${env:DATADOG_API_KEY}
+
+functions:
+  nestjs:
+    handler: src/lambda.handler
+    events:
+      - http:
+          method: any
+          path: /{any+}
+      - http:
+          path: ''
+          method: any
